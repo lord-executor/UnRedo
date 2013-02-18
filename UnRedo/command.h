@@ -6,8 +6,8 @@ class Command
 public:
     virtual ~Command() {}
 
-    virtual void Do() = 0;
-    virtual void Undo() = 0;
+    virtual void doCommand() = 0;
+    virtual void undoCommand() = 0;
 };
 
 #endif // COMMAND_H
