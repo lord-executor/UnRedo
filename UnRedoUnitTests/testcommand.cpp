@@ -5,6 +5,9 @@ TestCommand::TestCommand()
     _doCount = 0;
     _undoCount = 0;
 }
+TestCommand::~TestCommand()
+{
+}
 
 void TestCommand::doCommand()
 {

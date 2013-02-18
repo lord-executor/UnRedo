@@ -5,8 +5,11 @@ History::History()
 {
     _current = 0;
 }
+History::~History()
+{
+}
 
-void History::execute(Command * const command)
+void History::execute(QSharedPointer<Command> command)
 {
     if (_current < _history.size())
     {

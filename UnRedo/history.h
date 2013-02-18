@@ -2,6 +2,7 @@
 #define HISTORY_H
 
 #include<vector>
+#include<QSharedPointer>
 #include "command.h"
 
 using namespace std;
@@ -9,12 +10,13 @@ using namespace std;
 class History
 {
 private:
-    vector<Command *> _history;
+    vector< QSharedPointer<Command> > _history;
     unsigned int _current;
 
 public:
     History();
-    void execute(Command * const command);
+    ~History();
+    void execute(QSharedPointer<Command> command);
     bool canUndo();
     bool canRedo();
     void undo();

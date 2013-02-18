@@ -11,6 +11,7 @@ private:
 
 public:
     TestCommand();
+    ~TestCommand();
     void doCommand();
     void undoCommand();
     int getDoCount();
