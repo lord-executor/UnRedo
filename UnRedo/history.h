@@ -1,7 +1,7 @@
 #ifndef HISTORY_H
 #define HISTORY_H
 
-#include<list>
+#include<vector>
 #include "command.h"
 
 using namespace std;
@@ -9,11 +9,12 @@ using namespace std;
 class History
 {
 private:
-    list<Command const *> _history;
+    vector<Command *> _history;
+    int _current;
 
 public:
     History();
-    void execute(Command const * command);
+    void execute(Command * const command);
     bool canUndo();
     bool canRedo();
     void undo();

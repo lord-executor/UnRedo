@@ -12,6 +12,9 @@ public:
 
 private Q_SLOTS:
     void testConstructor();
+    void testExecution();
+    void testUndo();
+    void testRedo();
 };
 
 DECLARE_TEST(HistoryTest)
