@@ -1,4 +1,5 @@
 #include "history.h"
+#include "historyexception.h"
 
 History::History()
     : _history()
@@ -43,7 +44,7 @@ bool History::canRedo()
 void History::undo()
 {
     if (!canUndo())
-        throw "impossible undo";
+        throw HistoryException("impossible undo");
 
     _history.at(--_current)->undoCommand();
 }
@@ -51,7 +52,7 @@ void History::undo()
 void History::redo()
 {
     if (!canRedo())
-        throw "impossible redo";
+        throw HistoryException("impossible redo");
 
     _history.at(_current++)->doCommand();
 }

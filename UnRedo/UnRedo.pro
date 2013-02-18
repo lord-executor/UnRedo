@@ -16,13 +16,17 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     history.cpp \
     textwidget.cpp \
-    keycommand.cpp
+    keycommand.cpp \
+    historyexception.cpp \
+    exception.cpp
 
 HEADERS  += mainwindow.h \
     command.h \
     history.h \
     textwidget.h \
-    keycommand.h
+    keycommand.h \
+    historyexception.h \
+    exception.h
 
 FORMS    += mainwindow.ui \
     textwidget.ui
