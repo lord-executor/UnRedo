@@ -10,7 +10,7 @@ class History
 {
 private:
     vector<Command *> _history;
-    int _current;
+    unsigned int _current;
 
 public:
     History();
