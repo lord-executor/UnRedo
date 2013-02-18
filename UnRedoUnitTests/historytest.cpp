@@ -69,6 +69,7 @@ void HistoryTest::testUndoOnEmpty()
 
     try
     {
+        QVERIFY2(!history.canUndo(), "Cannot undo now");
         history.undo();
     }
     catch (HistoryException&)
@@ -86,6 +87,7 @@ void HistoryTest::testRedoOnEmpty()
 
     try
     {
+        QVERIFY2(!history.canRedo(), "Cannot redo now");
         history.redo();
     }
     catch (HistoryException&)
@@ -107,6 +109,7 @@ void HistoryTest::testUndoOnBefore()
 
     try
     {
+        QVERIFY2(!history.canUndo(), "Cannot undo now");
         history.undo();
     }
     catch (HistoryException&)
@@ -127,6 +130,7 @@ void HistoryTest::testRedoOnLast()
 
     try
     {
+        QVERIFY2(!history.canRedo(), "Cannot redo now");
         history.redo();
     }
     catch (HistoryException&)
@@ -135,4 +139,56 @@ void HistoryTest::testRedoOnLast()
     }
 
     QVERIFY2(exception, "should have been a HistoryException");
+}
+
+void HistoryTest::testMultiCommandUndoRedo()
+{
+    History history;
+    QSharedPointer<TestCommand> c1 = QSharedPointer<TestCommand>(new TestCommand());
+    QSharedPointer<TestCommand> c2 = QSharedPointer<TestCommand>(new TestCommand());
+    QSharedPointer<TestCommand> c3 = QSharedPointer<TestCommand>(new TestCommand());
+
+    history.execute(c1);
+    history.execute(c2);
+    history.execute(c3);
+    history.undo();
+    history.undo();
+    history.redo();
+    history.redo();
+    history.undo();
+    history.redo();
+
+    QVERIFY2(c1->getDoCount() == 1, "First executed once");
+    QVERIFY2(c1->getUndoCount() == 0, "First never undone");
+    QVERIFY2(c2->getDoCount() == 2, "Second executed once");
+    QVERIFY2(c2->getUndoCount() == 1, "Second never undone");
+    QVERIFY2(c3->getDoCount() == 3, "Third executed once");
+    QVERIFY2(c3->getUndoCount() == 2, "Third never undone");
+}
+
+void HistoryTest::testHistoryWipeAfterExecute()
+{
+    History history;
+    QSharedPointer<TestCommand> c1 = QSharedPointer<TestCommand>(new TestCommand());
+    QSharedPointer<TestCommand> c2 = QSharedPointer<TestCommand>(new TestCommand());
+    QSharedPointer<TestCommand> c3 = QSharedPointer<TestCommand>(new TestCommand());
+    QSharedPointer<TestCommand> c4 = QSharedPointer<TestCommand>(new TestCommand());
+
+    history.execute(c1);
+    history.execute(c2);
+    history.execute(c3);
+    history.undo();
+    history.undo();
+    history.execute(c4);
+
+    QVERIFY2(!history.canRedo(), "Execute wipes the (forward) history");
+
+    QVERIFY2(c1->getDoCount() == 1, "First executed once");
+    QVERIFY2(c1->getUndoCount() == 0, "First never undone");
+    QVERIFY2(c2->getDoCount() == 1, "Second executed once");
+    QVERIFY2(c2->getUndoCount() == 1, "Second never undone");
+    QVERIFY2(c3->getDoCount() == 1, "Third executed once");
+    QVERIFY2(c3->getUndoCount() == 1, "Third never undone");
+    QVERIFY2(c4->getDoCount() == 1, "Fourth executed once");
+    QVERIFY2(c4->getUndoCount() == 0, "Fourth never undone");
 }

@@ -16,7 +16,7 @@ void History::execute(QSharedPointer<Command> command)
     {
         // wipe history from current to end so we can
         // rewrite said history
-        _history.resize(_current + 1);
+        _history.resize(_current);
     }
 
     _history.push_back(command);

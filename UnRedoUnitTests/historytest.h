@@ -19,6 +19,8 @@ private Q_SLOTS:
     void testUndoOnBefore();
     void testRedoOnEmpty();
     void testRedoOnLast();
+    void testMultiCommandUndoRedo();
+    void testHistoryWipeAfterExecute();
 };
 
 DECLARE_TEST(HistoryTest)
