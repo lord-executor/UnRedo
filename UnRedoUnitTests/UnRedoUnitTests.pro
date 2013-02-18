@@ -17,6 +17,8 @@ TEMPLATE = app
 
 SOURCES += \
     ../UnRedo/history.cpp \
+    ../UnRedo/historyexception.cpp \
+    ../UnRedo/exception.cpp \
     testcommand.cpp \
     main.cpp \
     testcommandtest.cpp \

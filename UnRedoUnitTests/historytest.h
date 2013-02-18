@@ -11,10 +11,14 @@ public:
     HistoryTest();
 
 private Q_SLOTS:
-    void testConstructor();
-    void testExecution();
+    void testEmptyHistory();
+    void testSingleExecution();
     void testUndo();
     void testRedo();
+    void testUndoOnEmpty();
+    void testUndoOnBefore();
+    void testRedoOnEmpty();
+    void testRedoOnLast();
 };
 
 DECLARE_TEST(HistoryTest)

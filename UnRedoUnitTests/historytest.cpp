@@ -1,14 +1,17 @@
 #include "historytest.h"
 #include "../UnRedo/history.h"
+#include "../UnRedo/historyexception.h"
 #include "testcommand.h"
 #include <QDebug>
 #include <QSharedPointer>
+#include <typeinfo>
+
 
 HistoryTest::HistoryTest()
 {
 }
 
-void HistoryTest::testConstructor()
+void HistoryTest::testEmptyHistory()
 {
     History history;
 
@@ -16,7 +19,7 @@ void HistoryTest::testConstructor()
     QVERIFY2(history.canUndo() == false, "Empty history cannot undo");
 }
 
-void HistoryTest::testExecution()
+void HistoryTest::testSingleExecution()
 {
     History history;
     TestCommand * command = new TestCommand();
@@ -57,4 +60,79 @@ void HistoryTest::testRedo()
     QVERIFY2(history.canRedo() == false, "No redo at end of command sequence");
     QVERIFY2(command->getDoCount() == 2, "Command has been executed twice");
     QVERIFY2(command->getUndoCount() == 1, "Command has been undone");
+}
+
+void HistoryTest::testUndoOnEmpty()
+{
+    History history;
+    bool exception = false;
+
+    try
+    {
+        history.undo();
+    }
+    catch (HistoryException&)
+    {
+        exception = true;
+    }
+
+    QVERIFY2(exception, "should have been a HistoryException");
+}
+
+void HistoryTest::testRedoOnEmpty()
+{
+    History history;
+    bool exception = false;
+
+    try
+    {
+        history.redo();
+    }
+    catch (HistoryException&)
+    {
+        exception = true;
+    }
+
+    QVERIFY2(exception, "should have been a HistoryException");
+}
+
+void HistoryTest::testUndoOnBefore()
+{
+    History history;
+    QSharedPointer<Command> command = QSharedPointer<Command>(new TestCommand());
+    bool exception = false;
+
+    history.execute(command);
+    history.undo();
+
+    try
+    {
+        history.undo();
+    }
+    catch (HistoryException&)
+    {
+        exception = true;
+    }
+
+    QVERIFY2(exception, "should have been a HistoryException");
+}
+
+void HistoryTest::testRedoOnLast()
+{
+    History history;
+    QSharedPointer<Command> command = QSharedPointer<Command>(new TestCommand());
+    bool exception = false;
+
+    history.execute(command);
+
+    try
+    {
+        history.redo();
+    }
+    catch (HistoryException&)
+    {
+        exception = true;
+    }
+
+    QVERIFY2(exception, "should have been a HistoryException");
 }
