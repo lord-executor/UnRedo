@@ -14,10 +14,13 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    history.cpp
+    history.cpp \
+    textwidget.cpp
 
 HEADERS  += mainwindow.h \
     command.h \
-    history.h
+    history.h \
+    textwidget.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    textwidget.ui
