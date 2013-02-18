@@ -1,5 +1,7 @@
 #include "textwidget.h"
 #include "ui_textwidget.h"
+#include "keycommand.h"
+#include <QSharedPointer>
 
 TextWidget::TextWidget(QWidget *parent) :
     QPlainTextEdit(parent),
@@ -15,8 +17,8 @@ TextWidget::~TextWidget()
 
 void TextWidget::keyPressEvent(QKeyEvent *k)
 {
-
-    this->setPlainText(this->toPlainText() + (char)(k->key()));
+    KeyCommand * command = new KeyCommand(this, (char)(k->key()));
+    _history.execute(QSharedPointer<Command>(command));
 /*switch ( tolower(k->ascii()) ) {
 case 'r': // reload
 pict->load( name );

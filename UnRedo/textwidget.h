@@ -2,6 +2,7 @@
 #define TEXTWIDGET_H
 
 #include <QPlainTextEdit>
+#include "history.h"
 
 namespace Ui {
 class TextWidget;
@@ -20,6 +21,7 @@ protected:
     
 private:
     Ui::TextWidget *ui;
+    History _history;
 };
 
 #endif // TEXTWIDGET_H
